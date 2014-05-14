@@ -4,5 +4,13 @@
     <string name="app_name">SLP Data Tracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="tracker_success_percent">100%</string>
+    <string name="tracker_cue_percent">80%</string>
+    <string name="tracker_btn_correct">Correct</string>
+    <string name="tracker_btn_cue">Cue</string>
+    <string name="tracker_btn_wrong">Wrong</string>
+    <string name="tracker_success">Success</string>
+    <string name="tracker_cue">Cue</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
