@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SLPDataTracker.iml" filepath="$PROJECT_DIR$/SLPDataTracker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/slpdatatracker/slpdatatracker.iml" filepath="$PROJECT_DIR$/slpdatatracker/slpdatatracker.iml" />
+    </modules>
+  </component>
+</project>
+
