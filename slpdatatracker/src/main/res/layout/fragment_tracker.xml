@@ -31,6 +31,7 @@
                 android:textColor="@android:color/holo_blue_dark"/>
 
             <TextView
+                android:id="@+id/tracker_txt_success"
                 android:text="@string/tracker_success_percent"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
                 android:textSize="36dp"
                 android:layout_margin="10dp"/>
             <TextView
-                android:id="@+id/tracker_success_data"
+                android:id="@+id/tracker_txt_success_data"
                 android:text="9/10"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
                 android:textColor="@android:color/holo_orange_dark"/>
 
             <TextView
+                android:id="@+id/tracker_txt_cue"
                 android:text="@string/tracker_cue_percent"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +75,7 @@
                 android:layout_margin="10dp"/>
 
             <TextView
-                android:id="@+id/tracker_cue_data"
+                android:id="@+id/tracker_txt_cue_data"
                 android:text="9/10"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
