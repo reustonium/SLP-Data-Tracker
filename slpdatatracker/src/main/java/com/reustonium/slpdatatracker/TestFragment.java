@@ -2,13 +2,15 @@ package com.reustonium.slpdatatracker;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class TrackerFragment extends Fragment {
+public class TestFragment extends Fragment {
 
     int numQuestions;
     int numCorrect;
@@ -23,13 +25,20 @@ public class TrackerFragment extends Fragment {
     Button btn_cue;
     Button btn_wrong;
 
-    public TrackerFragment(){
+    public TestFragment(){
 
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_tracker, container, false);
 
         numQuestions = 0;
@@ -81,6 +90,25 @@ public class TrackerFragment extends Fragment {
         super.onResume();
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i("x", "menu item selected!");
+        int id = item.getItemId();
+        switch(id){
+            case R.id.action_reset:
+                resetCounter();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void resetCounter() {
+        numQuestions = 0;
+        numCorrect = 0;
+        numCue = 0;
+        updateTextViews();
     }
 
     public void updateTextViews(){

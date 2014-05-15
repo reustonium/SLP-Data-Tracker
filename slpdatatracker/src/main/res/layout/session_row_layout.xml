@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="match_parent" >
+
+    <ImageView
+        android:id="@+id/sessionRow_photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/abc_ic_search"/>
+    <TextView
+        android:id="@+id/sessionRow_TV_name"
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:text="Andy Ruestow"
+        android:layout_toRightOf="@id/sessionRow_photo"
+        android:gravity="center"
+        android:textSize="24dp"/>
+    <TextView
+        android:id="@+id/sessionRow_TV_date"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:text="May 15th, 2014"
+        android:layout_toRightOf="@id/sessionRow_photo"
+        android:layout_below="@id/sessionRow_TV_name"
+        android:gravity="center_horizontal"/>
+
+    </RelativeLayout>
