@@ -31,7 +31,7 @@ public class Patient {
         return sessions;
     }
 
-    public void setSessions(List<Session> sessions) {
-        this.sessions = sessions;
+    public void addSession(Session session) {
+        this.sessions.add(session);
     }
 }

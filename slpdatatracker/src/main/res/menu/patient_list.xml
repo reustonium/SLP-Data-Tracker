@@ -1,9 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:com.reustonium.slpdatatracker="http://schemas.android.com/apk/res-auto"
     tools:context="com.reustonium.slpdatatracker.MainActivity" >
     <item
         android:id="@+id/ab_add_patient"
         android:icon="@android:drawable/ic_menu_add"
         android:title="Add Patient"
+        com.reustonium.slpdatatracker:showAsAction="always"
         />
 </menu>
