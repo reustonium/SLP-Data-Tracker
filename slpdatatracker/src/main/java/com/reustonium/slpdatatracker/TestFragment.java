@@ -97,9 +97,7 @@ public class TestFragment extends Fragment {
         Log.i("x", "menu item selected!");
         int id = item.getItemId();
         switch(id){
-            case R.id.action_reset:
-                resetCounter();
-                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
