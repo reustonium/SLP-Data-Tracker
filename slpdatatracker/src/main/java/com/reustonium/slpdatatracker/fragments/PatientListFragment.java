@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,14 +31,6 @@ public class PatientListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        //TODO populate sessions data
-        patients.add(new Patient("ADR"));
-        patients.add(new Patient("LCR"));
-        patients.add(new Patient("AER"));
-        patients.add(new Patient("WCR"));
-        patients.add(new Patient("ARS"));
-        patients.add(new Patient("MEK"));
     }
 
     @Override
@@ -75,7 +66,7 @@ public class PatientListFragment extends Fragment {
         patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.v("!", "boobs");
+                //TODO launch fragment with Patient Info
             }
         });
         return rootView;
@@ -114,12 +105,6 @@ public class PatientListFragment extends Fragment {
                         .show();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //TODO Save sessions data
     }
 
 }

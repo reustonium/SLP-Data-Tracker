@@ -125,4 +125,10 @@ public class TestFragment extends Fragment {
             tv_cueData.setText(String.format("%d / %d", (numCorrect+numCue), numQuestions));
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
 }
