@@ -1,7 +1,9 @@
 package com.reustonium.slpdatatracker.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class PatientFragment extends Fragment {
     public static final String EXTRA_PATIENT_ID =
             "com.reustonium.slptracker.patient_id";
+    public static final String DATE_DIALOG = "com.reustonium.slptracker.date";
     private Patient mPatient;
     private EditText mEditText;
     private Button mButton;
@@ -66,6 +69,14 @@ public class PatientFragment extends Fragment {
 
         mButton = (Button)v.findViewById(R.id.patient_updatedAtButton);
         mButton.setText(mPatient.getUpdatedAt().toString());
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(fm, DATE_DIALOG);
+            }
+        });
 
         return v;
     }
