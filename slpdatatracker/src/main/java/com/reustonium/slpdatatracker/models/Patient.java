@@ -1,5 +1,6 @@
 package com.reustonium.slpdatatracker.models;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.ArrayList;
 
@@ -8,12 +9,14 @@ import java.util.ArrayList;
  */
 public class Patient {
     UUID mId;
+    Date updatedAt;
     String name;
     ArrayList<Session> sessions;
 
     public Patient(){
         sessions = new ArrayList<Session>();
         mId = UUID.randomUUID();
+        updateDate();
     }
 
     public String getName() {
@@ -22,6 +25,7 @@ public class Patient {
 
     public void setName(String name) {
         this.name = name;
+        updateDate();
     }
 
     public ArrayList<Session> getSessions() {
@@ -30,6 +34,7 @@ public class Patient {
 
     public void addSession(Session session) {
         this.sessions.add(session);
+        updateDate();
     }
 
     public UUID getId() {
@@ -39,5 +44,13 @@ public class Patient {
     @Override
     public String toString() {
         return name;
+    }
+
+    private void updateDate(){
+        updatedAt = new Date();
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 }

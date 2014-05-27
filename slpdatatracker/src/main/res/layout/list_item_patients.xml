@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/patient_list_item_nameTextView"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:paddingLeft="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="John Doe"/>
+    <TextView
+        android:id="@+id/patient_list_item_updatedTextView"
+        android:layout_below="@id/patient_list_item_nameTextView"
+        android:textSize="16dp"
+        android:paddingLeft="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="May 26th, 2014"/>
+
+</RelativeLayout>
