@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.reustonium.slpdatatracker.PatientActivity;
+import com.reustonium.slpdatatracker.PatientPagerActivity;
 import com.reustonium.slpdatatracker.R;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
@@ -31,10 +31,17 @@ public class PatientListFragment extends ListFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((PatientAdapter)getListAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Patient p = (Patient)getListAdapter().getItem(position);
 
-        Intent i = new Intent(getActivity(), PatientActivity.class);
+        Intent i = new Intent(getActivity(), PatientPagerActivity.class);
+        i.putExtra(PatientFragment.EXTRA_PATIENT_ID, p.getId());
         startActivity(i);
     }
 

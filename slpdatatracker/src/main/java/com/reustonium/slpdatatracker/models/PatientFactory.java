@@ -18,14 +18,14 @@ public class PatientFactory {
         mPatients = new ArrayList<Patient>();
         for(int i=0; i<8; i++){
             Patient p = new Patient();
-            p.setName("Jimmy");
+            p.setName("Jimmy " + i);
             mPatients.add(p);
         }
     }
 
     public static PatientFactory get(Context c){
         if (sPatientFactory == null) {
-            return new PatientFactory(c.getApplicationContext());
+            sPatientFactory = new PatientFactory(c.getApplicationContext());
         }
         return sPatientFactory;
     }
@@ -36,7 +36,7 @@ public class PatientFactory {
 
     public Patient getPatient(UUID uuid){
         for (Patient p : mPatients){
-            if (p.getId()==uuid) {
+            if (p.getId().equals(uuid)) {
                 return p;
             }
         }
