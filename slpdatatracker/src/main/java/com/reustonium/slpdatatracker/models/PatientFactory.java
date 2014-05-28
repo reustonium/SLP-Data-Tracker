@@ -16,11 +16,6 @@ public class PatientFactory {
     private PatientFactory(Context context){
         mAppContext = context;
         mPatients = new ArrayList<Patient>();
-        for(int i=0; i<8; i++){
-            Patient p = new Patient();
-            p.setName("Jimmy " + i);
-            mPatients.add(p);
-        }
     }
 
     public static PatientFactory get(Context c){
@@ -41,5 +36,9 @@ public class PatientFactory {
             }
         }
         return null;
+    }
+
+    public void addPatient(Patient p){
+        mPatients.add(p);
     }
 }
