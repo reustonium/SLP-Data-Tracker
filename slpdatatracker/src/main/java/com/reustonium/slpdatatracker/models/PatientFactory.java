@@ -8,7 +8,11 @@ import android.content.Context;
  * Created by Andrew on 5/25/2014.
  */
 public class PatientFactory {
+    public static final String TAG = "PatientFactory";
+    public static final String FILENAME = "patients.json";
+
     private ArrayList<Patient> mPatients;
+    private SlpDataTrackerJSONSerializer mSerializer;
 
     private static PatientFactory sPatientFactory;
     private Context mAppContext;
@@ -16,6 +20,13 @@ public class PatientFactory {
     private PatientFactory(Context context){
         mAppContext = context;
         mPatients = new ArrayList<Patient>();
+        mSerializer = new SlpDataTrackerJSONSerializer(mAppContext, FILENAME);
+
+        try{
+            mPatients = mSerializer.loadPatients();
+        } catch(Exception ex){
+            mPatients = new ArrayList<Patient>();
+        }
     }
 
     public static PatientFactory get(Context c){
@@ -40,5 +51,14 @@ public class PatientFactory {
 
     public void addPatient(Patient p){
         mPatients.add(p);
+    }
+
+    public boolean savePatients(){
+        try{
+            mSerializer.savePatients(mPatients);
+            return true;
+        } catch (Exception ex){
+            return false;
+        }
     }
 }

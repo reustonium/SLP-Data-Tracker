@@ -127,4 +127,10 @@ public class PatientFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        PatientFactory.get(getActivity()).savePatients();
+    }
 }
