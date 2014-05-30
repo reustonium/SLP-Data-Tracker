@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/SLP-Data-Tracker.iml" filepath="$PROJECT_DIR$/SLP-Data-Tracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/SLPDataTracker.iml" filepath="$PROJECT_DIR$/SLPDataTracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/slpdatatracker/slpdatatracker.iml" filepath="$PROJECT_DIR$/slpdatatracker/slpdatatracker.iml" />
     </modules>

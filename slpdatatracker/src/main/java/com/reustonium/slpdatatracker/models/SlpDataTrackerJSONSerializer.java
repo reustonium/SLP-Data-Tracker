@@ -8,9 +8,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import android.content.Context;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,16 +33,14 @@ public class SlpDataTrackerJSONSerializer {
     }
 
     public void savePatients(ArrayList<Patient> patients) throws JSONException, IOException{
-        JSONArray array = new JSONArray();
-        for (Patient p : patients){
-            array.put(p.toJSON());
-        }
+        Gson gson = new Gson();
+        String json = gson.toJson(patients);
 
         Writer writer = null;
         try{
             OutputStream out = mContext.openFileOutput(mFilename, Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(out);
-            writer.write(array.toString());
+            writer.write(json);
         } finally {
             if (writer != null) {
                 writer.close();
@@ -49,20 +51,20 @@ public class SlpDataTrackerJSONSerializer {
     public ArrayList<Patient> loadPatients() throws JSONException, IOException {
         ArrayList<Patient> patients = new ArrayList<Patient>();
         BufferedReader reader = null;
+        Gson gson = new Gson();
 
         try{
             InputStream in = mContext.openFileInput(mFilename);
-            reader = new BufferedReader(new InputStreamReader(in));
-            StringBuilder jsonString = new StringBuilder();
-            String line = null;
+            int size = in.available();
+            byte[] buffer = new byte[size];
 
-            while((line = reader.readLine()) != null){
-                jsonString.append(line);
-            }
-            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
-            for(int i=0; i<array.length(); i++){
-                patients.add(new Patient(array.getJSONObject(i)));
-            }
+            in.read(buffer);
+            in.close();
+
+            String json = new String(buffer, "UTF-8");
+            Type collectionType = new TypeToken<ArrayList<Patient>>(){}.getType();
+            patients = gson.fromJson(json, collectionType);
+
         } catch (FileNotFoundException ex) {
 
         } finally {

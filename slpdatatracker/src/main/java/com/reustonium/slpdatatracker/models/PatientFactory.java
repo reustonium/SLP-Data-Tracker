@@ -53,6 +53,10 @@ public class PatientFactory {
         mPatients.add(p);
     }
 
+    public void deletePatient(Patient p){
+        mPatients.remove(p);
+    }
+
     public boolean savePatients(){
         try{
             mSerializer.savePatients(mPatients);
