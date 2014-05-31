@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,14 +13,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.reustonium.slpdatatracker.R;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
-import java.util.Date;
+import org.joda.time.LocalDateTime;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -34,7 +35,7 @@ public class PatientFragment extends Fragment {
 
     private Patient mPatient;
     private EditText mEditText;
-    private Button mButton;
+    private TextView mTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,18 +84,8 @@ public class PatientFragment extends Fragment {
             }
         });
 
-        mButton = (Button)v.findViewById(R.id.patient_updatedAtButton);
+        mTextView = (TextView)v.findViewById(R.id.patient_updatedAtTextView);
         updateDate();
-        mButton.setText(mPatient.getUpdatedAt().toString());
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                DatePickerFragment dialog = DatePickerFragment.newInstance(mPatient.getUpdatedAt());
-                dialog.setTargetFragment(PatientFragment.this, REQUEST_DATE);
-                dialog.show(fm, DATE_DIALOG);
-            }
-        });
 
         return v;
     }
@@ -105,14 +96,14 @@ public class PatientFragment extends Fragment {
             return;
         }
         if(requestCode==REQUEST_DATE){
-            Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            LocalDateTime date = (LocalDateTime)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mPatient.setUpdatedAt(date);
             updateDate();
         }
     }
 
     private void updateDate(){
-        mButton.setText(mPatient.getUpdatedAt().toString());
+        mTextView.setText(mPatient.getPrettyUpdatedAt().toString());
     }
 
     @Override
@@ -131,6 +122,11 @@ public class PatientFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        //If a name isn't assigned, pop it out of the Patient List
+        if (mPatient.getName() == null) {
+            ArrayList<Patient> patients = PatientFactory.get(getActivity()).getPatients();
+            patients.remove(mPatient);
+        }
         PatientFactory.get(getActivity()).savePatients();
     }
 }

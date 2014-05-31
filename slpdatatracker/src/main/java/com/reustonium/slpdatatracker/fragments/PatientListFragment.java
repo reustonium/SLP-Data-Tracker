@@ -106,10 +106,6 @@ public class PatientListFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_patient_list, menu);
-        MenuItem showSubtitle = menu.findItem(R.id.menu_item_show_subtitle);
-        if (mSubtitleVisable && showSubtitle != null) {
-            showSubtitle.setTitle("Hide Subtitle");
-        }
     }
 
     @Override
@@ -158,16 +154,6 @@ public class PatientListFragment extends ListFragment {
                 i.putExtra(PatientFragment.EXTRA_PATIENT_ID, patient.getId());
                 startActivityForResult(i, 0);
                 return true;
-            case R.id.menu_item_show_subtitle:
-                if (getActivity().getActionBar().getSubtitle() == null) {
-                    getActivity().getActionBar().setSubtitle("Your Patients are #1");
-                    item.setTitle("Hide Subtitle");
-                    mSubtitleVisable = true;
-                } else {
-                    getActivity().getActionBar().setSubtitle(null);
-                    item.setTitle("Show Subtitle");
-                    mSubtitleVisable = false;
-                }
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -194,7 +180,7 @@ public class PatientListFragment extends ListFragment {
             TextView updatedTextView = (TextView)convertView.findViewById(R.id.patient_list_item_updatedTextView);
 
             nameTextView.setText(p.getName());
-            updatedTextView.setText(p.getUpdatedAt().toString());
+            updatedTextView.setText(p.getPrettyUpdatedAt().toString());
 
             return convertView;
         }

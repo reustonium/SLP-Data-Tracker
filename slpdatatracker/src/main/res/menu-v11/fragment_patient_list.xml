@@ -6,8 +6,4 @@
         android:title="Add Patient"
         android:showAsAction="ifRoom|withText"
         />
-    <item
-        android:id="@+id/menu_item_show_subtitle"
-        android:title="Show Subtitle"
-        android:showAsAction="ifRoom"/>
 </menu>
