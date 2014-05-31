@@ -15,10 +15,10 @@ public class Patient {
     UUID mId;
     Date updatedAt;
     String name;
-    ArrayList<Session> sessions;
+    ArrayList<Goal> mGoals;
 
     public Patient(){
-        sessions = new ArrayList<Session>();
+        mGoals = new ArrayList<Goal>();
         mId = UUID.randomUUID();
         updateDate();
     }
@@ -32,13 +32,12 @@ public class Patient {
         updateDate();
     }
 
-    public ArrayList<Session> getSessions() {
-        return sessions;
+    public ArrayList<Goal> getGoals() {
+        return mGoals;
     }
 
-    public void addSession(Session session) {
-        this.sessions.add(session);
-        updateDate();
+    public void setGoals(ArrayList<Goal> goals) {
+        mGoals = goals;
     }
 
     public UUID getId() {

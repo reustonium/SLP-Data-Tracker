@@ -10,13 +10,17 @@ import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.reustonium.slpdatatracker.R;
+import com.reustonium.slpdatatracker.adapters.GoalListAdapter;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
@@ -35,6 +39,7 @@ public class PatientFragment extends Fragment {
     private Patient mPatient;
     private EditText mEditText;
     private TextView mTextView;
+    private ListView mListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,16 @@ public class PatientFragment extends Fragment {
         mTextView = (TextView)v.findViewById(R.id.patient_updatedAtTextView);
         updateDate();
 
+        mListView = (ListView)v.findViewById(R.id.patient_goal_listView);
+        mListView.setAdapter(new GoalListAdapter(getActivity(), android.R.layout.simple_list_item_1, mPatient.getGoals()));
+
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_patient, menu);
     }
 
     @Override
