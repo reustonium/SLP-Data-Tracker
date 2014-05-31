@@ -1,9 +1,9 @@
 package com.reustonium.slpdatatracker.models;
 
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Patient {
 
     UUID mId;
-    LocalDateTime updatedAt;
+    Date updatedAt;
     String name;
     ArrayList<Session> sessions;
 
@@ -51,19 +51,19 @@ public class Patient {
     }
 
     private void updateDate(){
-        updatedAt = new LocalDateTime();
+        updatedAt = new Date();
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
     public String getPrettyUpdatedAt(){
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MMMM d, YYYY hh:mm a");
-        return updatedAt.toString(formatter);
+        DateFormat formatter = new SimpleDateFormat("MMMM d, yyyy hh:mm a");
+        return formatter.format(updatedAt);
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 

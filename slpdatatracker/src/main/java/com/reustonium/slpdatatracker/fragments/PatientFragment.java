@@ -20,9 +20,8 @@ import com.reustonium.slpdatatracker.R;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
-import org.joda.time.LocalDateTime;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -96,7 +95,7 @@ public class PatientFragment extends Fragment {
             return;
         }
         if(requestCode==REQUEST_DATE){
-            LocalDateTime date = (LocalDateTime)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mPatient.setUpdatedAt(date);
             updateDate();
         }
