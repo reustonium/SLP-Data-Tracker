@@ -19,8 +19,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.reustonium.slpdatatracker.PatientPagerActivity;
 import com.reustonium.slpdatatracker.R;
 import com.reustonium.slpdatatracker.adapters.GoalListAdapter;
+import com.reustonium.slpdatatracker.models.Goal;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
@@ -33,8 +35,8 @@ import java.util.UUID;
  */
 public class PatientFragment extends Fragment {
     public static final String EXTRA_PATIENT_ID = "com.reustonium.slptracker.patient_id";
-    public static final String DATE_DIALOG = "com.reustonium.slptracker.date";
-    public static final int REQUEST_DATE = 0;
+    public static final int REQUEST_GOAL = 1;
+    public static final String EXTRA_GOAL = "com.reustonium.slptracker.goal";
 
     private Patient mPatient;
     private EditText mEditText;
@@ -108,10 +110,12 @@ public class PatientFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if(requestCode==REQUEST_DATE){
-            Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            mPatient.setUpdatedAt(date);
+        if(requestCode==REQUEST_GOAL){
+            Goal mGoal = (Goal)data.getSerializableExtra(EXTRA_GOAL);
+            mPatient.setUpdatedAt(new Date());
             updateDate();
+            mPatient.addGoal(mGoal);
+
         }
     }
 
@@ -126,6 +130,12 @@ public class PatientFragment extends Fragment {
                 if (NavUtils.getParentActivityName(getActivity()) != null) {
                     NavUtils.navigateUpFromSameTask(getActivity());
                 }
+                return true;
+            case R.id.menu_item_new_goal:
+                Goal mGoal = new Goal();
+                mPatient.addGoal(mGoal);
+                Intent i = new Intent(getActivity(), GoalFragment.class);
+                startActivityForResult(i, 1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

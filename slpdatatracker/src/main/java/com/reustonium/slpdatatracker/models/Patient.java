@@ -66,4 +66,7 @@ public class Patient {
         this.updatedAt = updatedAt;
     }
 
+    public void addGoal(Goal mGoal) {
+        mGoals.add(mGoal);
+    }
 }
