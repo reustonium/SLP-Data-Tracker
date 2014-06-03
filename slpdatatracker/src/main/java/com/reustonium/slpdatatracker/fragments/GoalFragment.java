@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,24 +12,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.reustonium.slpdatatracker.R;
-import com.reustonium.slpdatatracker.models.Goal;
 
 public class GoalFragment extends Fragment {
-    public static final String EXTRA_GOAL = "com.reustonium.slptracker.goal";
-    private static String[] GOAL_NAMES;
-
-    private Goal mGoal;
+    public static final String EXTRA_GOAL_NAME = "com.reustonium.slptracker.goal.name";
+    public static final String EXTRA_GOAL_NQUESTIONS = "com.reustonium.slptracker.goal.nquestions";
+    public static final String EXTRA_GOAL_NCORRECT = "com.reustonium.slptracker.goal.ncorrect";
+    public static final String EXTRA_GOAL_NCUE = "com.reustonium.slptracker.goal.ncue";
+    private String goalName;
 
     int numQuestions;
     int numCorrect;
     int numCue;
 
-    AutoCompleteTextView goalName_actv;
+    Spinner goalName_Spinner;
     TextView tv_success;
     TextView tv_successData;
     TextView tv_cue;
@@ -48,8 +47,6 @@ public class GoalFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        GOAL_NAMES = getResources().getStringArray(R.array.goal_names);
-        mGoal = new Goal();
     }
 
     @Override
@@ -62,14 +59,14 @@ public class GoalFragment extends Fragment {
         numCorrect = 0;
         numCue = 0;
 
-        goalName_actv = (AutoCompleteTextView)rootView.findViewById(R.id.fragment_goal_nameAutoCompleteTV);
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, GOAL_NAMES);
-        goalName_actv.setAdapter(mAdapter);
-        goalName_actv.setThreshold(0);
-        goalName_actv.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        goalName_Spinner = (Spinner)rootView.findViewById(R.id.fragment_goal_nameSpinner);
+        ArrayAdapter<CharSequence> mAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.goal_names, android.R.layout.simple_spinner_dropdown_item);
+        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        goalName_Spinner.setAdapter(mAdapter);
+        goalName_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mGoal.setGoalName(GOAL_NAMES[i]);
+                goalName = (String)adapterView.getItemAtPosition(i);
             }
 
             @Override
@@ -143,13 +140,6 @@ public class GoalFragment extends Fragment {
         }
     }
 
-    private void resetCounter() {
-        numQuestions = 0;
-        numCorrect = 0;
-        numCue = 0;
-        updateTextViews();
-    }
-
     public void updateTextViews(){
         if(numQuestions == 0){
             tv_success.setText("0%");
@@ -177,13 +167,14 @@ public class GoalFragment extends Fragment {
             return;
         }
 
-        mGoal.setNumCue(numCue);
-        mGoal.setNumIndependent(numCorrect);
-        mGoal.setNumQuestion(numQuestions);
-
         Intent i = new Intent();
-        i.putExtra(EXTRA_GOAL, mGoal);
+        i.putExtra(EXTRA_GOAL_NAME, goalName);
+        i.putExtra(EXTRA_GOAL_NQUESTIONS, numQuestions);
+        i.putExtra(EXTRA_GOAL_NCORRECT, numCorrect);
+        i.putExtra(EXTRA_GOAL_NCUE, numCue);
 
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, i);
+
     }
+
 }
