@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.reustonium.slpdatatracker.PatientPagerActivity;
+import com.reustonium.slpdatatracker.GoalActivity;
 import com.reustonium.slpdatatracker.R;
 import com.reustonium.slpdatatracker.adapters.GoalListAdapter;
 import com.reustonium.slpdatatracker.models.Goal;
@@ -42,6 +42,7 @@ public class PatientFragment extends Fragment {
     private EditText mEditText;
     private TextView mTextView;
     private ListView mListView;
+    private GoalListAdapter mGoalListAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class PatientFragment extends Fragment {
         setHasOptionsMenu(true);
         UUID patientID = (UUID)getArguments().getSerializable(EXTRA_PATIENT_ID);
         mPatient = PatientFactory.get(getActivity()).getPatient(patientID);
+        mGoalListAdapter = new GoalListAdapter(getActivity(), android.R.layout.simple_list_item_1, mPatient.getGoals());
     }
 
     public static PatientFragment newInstance(UUID patientID){
@@ -94,7 +96,8 @@ public class PatientFragment extends Fragment {
         updateDate();
 
         mListView = (ListView)v.findViewById(R.id.patient_goal_listView);
-        mListView.setAdapter(new GoalListAdapter(getActivity(), android.R.layout.simple_list_item_1, mPatient.getGoals()));
+
+        mListView.setAdapter(mGoalListAdapter);
 
         return v;
     }
@@ -115,12 +118,12 @@ public class PatientFragment extends Fragment {
             mPatient.setUpdatedAt(new Date());
             updateDate();
             mPatient.addGoal(mGoal);
-
+            mGoalListAdapter.notifyDataSetChanged();
         }
     }
 
     private void updateDate(){
-        mTextView.setText(mPatient.getPrettyUpdatedAt().toString());
+        mTextView.setText(mPatient.getPrettyUpdatedAt());
     }
 
     @Override
@@ -134,7 +137,7 @@ public class PatientFragment extends Fragment {
             case R.id.menu_item_new_goal:
                 Goal mGoal = new Goal();
                 mPatient.addGoal(mGoal);
-                Intent i = new Intent(getActivity(), GoalFragment.class);
+                Intent i = new Intent(getActivity(), GoalActivity.class);
                 startActivityForResult(i, 1);
                 return true;
             default:

@@ -10,5 +10,14 @@
     <string name="tracker_success">Success</string>
     <string name="tracker_cue">Cue</string>
     <string name="action_reset">reset</string>
+    <string-array name="goal_names">
+        <item>Verbal Expression</item>
+        <item>Comprehension</item>
+        <item>Cognitive - Linguistic Skills</item>
+        <item>Reading Comprehension</item>
+        <item>Writing</item>
+        <item>Attention</item>
+        <item>Pragmatics</item>
+    </string-array>
 
 </resources>

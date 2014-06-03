@@ -1,9 +1,11 @@
 package com.reustonium.slpdatatracker.models;
 
+import java.io.Serializable;
+
 /**
  * Created by Andrew on 5/15/2014.
  */
-public class Goal {
+public class Goal implements Serializable{
     public String goalName;
     public int numQuestion;
     public int numIndependent;
@@ -50,5 +52,10 @@ public class Goal {
 
     public void setNumCue(int numCue) {
         this.numCue = numCue;
+    }
+
+    @Override
+    public String toString() {
+        return goalName;
     }
 }

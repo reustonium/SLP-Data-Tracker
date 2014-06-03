@@ -31,7 +31,6 @@ import com.reustonium.slpdatatracker.models.PatientFactory;
  */
 public class PatientListFragment extends ListFragment {
     private ArrayList<Patient> mPatients = new ArrayList<Patient>();
-    private boolean mSubtitleVisable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,6 @@ public class PatientListFragment extends ListFragment {
         setListAdapter(new PatientAdapter(mPatients));
         setHasOptionsMenu(true);
         setRetainInstance(true);
-        mSubtitleVisable = false;
     }
 
     @TargetApi(11)
