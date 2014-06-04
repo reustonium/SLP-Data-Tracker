@@ -4,11 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card_background"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp">
+    android:background="@drawable/card_background">
 
     <TextView
         android:id="@+id/patient_list_item_nameTextView"
@@ -26,5 +22,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="May 26th, 2014"/>
+    <TextView
+        android:id="@+id/patient_list_item_numGoals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="26dp"
+        android:textSize="26dp"
+        android:text="8"/>
 
 </RelativeLayout>

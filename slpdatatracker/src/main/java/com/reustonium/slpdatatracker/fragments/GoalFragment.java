@@ -1,9 +1,8 @@
 package com.reustonium.slpdatatracker.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +41,7 @@ public class GoalFragment extends Fragment {
 
     public interface OnSaveListener{
         public void onGoalSaved(Goal mGoal);
+        public void onNoGoalSaved();
     }
 
     public GoalFragment(){
@@ -148,7 +148,7 @@ public class GoalFragment extends Fragment {
                 mGoal.setNumCue(numCue);
                 mSaveListener.onGoalSaved(mGoal);
             case R.id.menu_item_delete_goal:
-                //TODO back to PatientFragment
+                mSaveListener.onNoGoalSaved();
             default:
                 return super.onOptionsItemSelected(item);
         }

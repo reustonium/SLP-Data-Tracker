@@ -1,25 +1,22 @@
 package com.reustonium.slpdatatracker.models;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Andrew on 5/15/2014.
  */
 public class Goal implements Serializable{
     public String goalName;
+    private Date mDate;
     public int numQuestion;
     public int numIndependent;
     public int numCue;
 
     public Goal(){
-
-    }
-
-    public Goal(String goalName, int numQuestion, int numIndependent, int numCue){
-        this.goalName = goalName;
-        this.numQuestion = numQuestion;
-        this.numIndependent = numIndependent;
-        this.numCue = numCue;
+        setDate(new Date());
     }
 
     public String getGoalName() {
@@ -57,5 +54,18 @@ public class Goal implements Serializable{
     @Override
     public String toString() {
         return goalName;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date mDate) {
+        this.mDate = mDate;
+    }
+
+    public String getPrettyDate(){
+        DateFormat formatter = new SimpleDateFormat("MMMM d, yyyy hh:mm a");
+        return formatter.format(getDate());
     }
 }

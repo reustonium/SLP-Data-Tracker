@@ -2,11 +2,9 @@ package com.reustonium.slpdatatracker.fragments;
 
 import java.util.ArrayList;
 
-import android.annotation.TargetApi;
+import android.app.ListFragment;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -21,7 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.reustonium.slpdatatracker.PatientPagerActivity;
+import com.reustonium.slpdatatracker.PatientActivity;
 import com.reustonium.slpdatatracker.R;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
@@ -42,60 +40,55 @@ public class PatientListFragment extends ListFragment {
         setRetainInstance(true);
     }
 
-    @TargetApi(11)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
         ListView listView = (ListView)v.findViewById(android.R.id.list);
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
-            registerForContextMenu(listView);
-        } else {
-            getActivity().getActionBar().setSubtitle("Your Patients are #1");
-            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-            listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-                @Override
-                public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
+        getActivity().getActionBar().setSubtitle("Yeah! Speech Therapist!");
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
 
-                }
+            }
 
-                @Override
-                public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-                    MenuInflater inflater = actionMode.getMenuInflater();
-                    inflater.inflate(R.menu.patient_list_item_context, menu);
-                    return true;
-                }
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                MenuInflater inflater = actionMode.getMenuInflater();
+                inflater.inflate(R.menu.patient_list_item_context, menu);
+                return true;
+            }
 
-                @Override
-                public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                    return false;
-                }
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
 
-                @Override
-                public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                    switch(menuItem.getItemId()){
-                        case R.id.menu_item_delete_patient:
-                            PatientAdapter adapter = (PatientAdapter)getListAdapter();
-                            PatientFactory patientFactory = PatientFactory.get(getActivity());
-                            for(int i=adapter.getCount()-1; i >=0; i--){
-                                if(getListView().isItemChecked(i)){
-                                    patientFactory.deletePatient(adapter.getItem(i));
-                                }
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                switch(menuItem.getItemId()){
+                    case R.id.menu_item_delete_patient:
+                        PatientAdapter adapter = (PatientAdapter)getListAdapter();
+                        PatientFactory patientFactory = PatientFactory.get(getActivity());
+                        for(int i=adapter.getCount()-1; i >=0; i--){
+                            if(getListView().isItemChecked(i)){
+                                patientFactory.deletePatient(adapter.getItem(i));
                             }
-                            actionMode.finish();
-                            adapter.notifyDataSetChanged();
-                            return true;
-                        default:
-                            return false;
-                    }
+                        }
+                        actionMode.finish();
+                        adapter.notifyDataSetChanged();
+                        return true;
+                    default:
+                        return false;
                 }
+            }
 
-                @Override
-                public void onDestroyActionMode(ActionMode actionMode) {
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
 
-                }
-            });
-        }
+            }
+        });
 
         return v;
     }
@@ -136,28 +129,26 @@ public class PatientListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Patient p = (Patient)getListAdapter().getItem(position);
 
-        Intent i = new Intent(getActivity(), PatientPagerActivity.class);
+        Intent i = new Intent(getActivity(), PatientActivity.class);
         i.putExtra(PatientFragment.EXTRA_PATIENT_ID, p.getId());
         startActivity(i);
     }
 
-    @TargetApi(11)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_item_new_patient:
                 Patient patient = new Patient();
                 PatientFactory.get(getActivity()).addPatient(patient);
-                Intent i = new Intent(getActivity(), PatientPagerActivity.class);
+                Intent i = new Intent(getActivity(), PatientActivity.class);
                 i.putExtra(PatientFragment.EXTRA_PATIENT_ID, patient.getId());
-                startActivityForResult(i, 0);
+                startActivity(i);
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     private class PatientAdapter extends ArrayAdapter<Patient>{
 
@@ -176,9 +167,11 @@ public class PatientListFragment extends ListFragment {
 
             TextView nameTextView = (TextView)convertView.findViewById(R.id.patient_list_item_nameTextView);
             TextView updatedTextView = (TextView)convertView.findViewById(R.id.patient_list_item_updatedTextView);
+            TextView numGoalsTextView = (TextView)convertView.findViewById(R.id.patient_list_item_numGoals);
 
             nameTextView.setText(p.getName());
             updatedTextView.setText(p.getPrettyUpdatedAt().toString());
+            numGoalsTextView.setText(String.format("%d goals", p.getGoals().size()));
 
             return convertView;
         }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/list_item_goal_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="Verbal Goal"/>
+    <TextView
+        android:id="@+id/list_item_goal_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_item_goal_name"
+        android:textSize="12dp"
+        android:text="May 5th, 2014"/>
+    <TextView
+        android:id="@+id/list_item_goal_cue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="36dp"
+        android:textSize="16dp"
+        android:layout_alignParentRight="true"
+        android:textColor="@android:color/holo_orange_dark"
+        android:text="90%"/>
+    <TextView
+        android:id="@+id/list_item_goal_correct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="36dp"
+        android:textSize="16dp"
+        android:layout_toLeftOf="@id/list_item_goal_cue"
+        android:textColor="@android:color/holo_blue_dark"
+        android:text="80%"/>
+
+</RelativeLayout>

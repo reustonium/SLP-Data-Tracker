@@ -1,11 +1,9 @@
 package com.reustonium.slpdatatracker.fragments;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
+import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,19 +13,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.reustonium.slpdatatracker.GoalActivity;
 import com.reustonium.slpdatatracker.R;
-import com.reustonium.slpdatatracker.adapters.GoalListAdapter;
 import com.reustonium.slpdatatracker.models.Goal;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -35,8 +31,6 @@ import java.util.UUID;
  */
 public class PatientFragment extends Fragment {
     public static final String EXTRA_PATIENT_ID = "com.reustonium.slptracker.patient_id";
-    public static final int REQUEST_GOAL = 1;
-    public static final String EXTRA_GOAL = "com.reustonium.slptracker.goal";
 
     private Patient mPatient;
     private EditText mEditText;
@@ -44,13 +38,30 @@ public class PatientFragment extends Fragment {
     private ListView mListView;
     private GoalListAdapter mGoalListAdapter;
 
+    private OnNewGoalListener goalListener;
+
+    public interface OnNewGoalListener{
+        public void OnAddGoal();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try{
+            goalListener = (OnNewGoalListener)activity;
+        } catch (ClassCastException ex){
+            throw new ClassCastException(activity.toString());
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         UUID patientID = (UUID)getArguments().getSerializable(EXTRA_PATIENT_ID);
         mPatient = PatientFactory.get(getActivity()).getPatient(patientID);
-        mGoalListAdapter = new GoalListAdapter(getActivity(), android.R.layout.simple_list_item_1, mPatient.getGoals());
+        mGoalListAdapter = new GoalListAdapter(getActivity(), R.layout.list_item_goals, mPatient.getGoals());
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public static PatientFragment newInstance(UUID patientID){
@@ -62,16 +73,9 @@ public class PatientFragment extends Fragment {
         return patientFragment;
     }
 
-    @TargetApi(11)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_patient, container, false);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            if (NavUtils.getParentActivityName(getActivity()) != null) {
-                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-        }
 
         mEditText = (EditText)v.findViewById(R.id.patient_nameEditText);
         mEditText.setText(mPatient.getName());
@@ -93,11 +97,11 @@ public class PatientFragment extends Fragment {
         });
 
         mTextView = (TextView)v.findViewById(R.id.patient_updatedAtTextView);
-        updateDate();
 
         mListView = (ListView)v.findViewById(R.id.patient_goal_listView);
-
         mListView.setAdapter(mGoalListAdapter);
+
+        updateDate();
 
         return v;
     }
@@ -108,19 +112,6 @@ public class PatientFragment extends Fragment {
         inflater.inflate(R.menu.fragment_patient, menu);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if(requestCode==REQUEST_GOAL){
-            Goal mGoal = (Goal)data.getSerializableExtra(EXTRA_GOAL);
-            mPatient.setUpdatedAt(new Date());
-            updateDate();
-            mPatient.addGoal(mGoal);
-            mGoalListAdapter.notifyDataSetChanged();
-        }
-    }
 
     private void updateDate(){
         mTextView.setText(mPatient.getPrettyUpdatedAt());
@@ -135,10 +126,7 @@ public class PatientFragment extends Fragment {
                 }
                 return true;
             case R.id.menu_item_new_goal:
-                Goal mGoal = new Goal();
-                mPatient.addGoal(mGoal);
-                Intent i = new Intent(getActivity(), GoalActivity.class);
-                startActivityForResult(i, 1);
+                goalListener.OnAddGoal();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -155,4 +143,40 @@ public class PatientFragment extends Fragment {
         }
         PatientFactory.get(getActivity()).savePatients();
     }
+
+    private class GoalListAdapter extends ArrayAdapter<Goal>{
+
+        public GoalListAdapter(Context context, int resource, ArrayList<Goal> goals) {
+            super(context, resource, goals);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater()
+                        .inflate(R.layout.list_item_goals, null);
+            }
+
+            Goal g = getItem(position);
+
+            TextView goalName = (TextView)convertView.findViewById(R.id.list_item_goal_name);
+            TextView goalCorrect = (TextView)convertView.findViewById(R.id.list_item_goal_correct);
+            TextView goalCue = (TextView)convertView.findViewById(R.id.list_item_goal_cue);
+            TextView goalDate = (TextView)convertView.findViewById(R.id.list_item_goal_date);
+
+            goalName.setText(g.getGoalName());
+            goalDate.setText(g.getPrettyDate());
+
+            if(g.getNumQuestion() == 0){
+                goalCorrect.setText("0%");
+                goalCue.setText("0%");
+            } else {
+                goalCorrect.setText(String.format("%d%%", Math.round(g.getNumIndependent() * 100/g.getNumQuestion())));
+                goalCue.setText(String.format("%d%%", Math.round((g.numIndependent+g.numCue)* 100 /g.getNumQuestion())));
+            }
+
+            return convertView;
+        }
+    }
+
 }

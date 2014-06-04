@@ -1,6 +1,7 @@
 package com.reustonium.slpdatatracker;
 
-import android.support.v4.app.Fragment;
+
+import android.app.Fragment;
 
 import com.reustonium.slpdatatracker.fragments.PatientListFragment;
 
