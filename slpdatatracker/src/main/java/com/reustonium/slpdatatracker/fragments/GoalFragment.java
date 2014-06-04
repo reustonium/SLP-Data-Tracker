@@ -17,13 +17,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.reustonium.slpdatatracker.R;
+import com.reustonium.slpdatatracker.models.Goal;
 
 public class GoalFragment extends Fragment {
-    public static final String EXTRA_GOAL_NAME = "com.reustonium.slptracker.goal.name";
-    public static final String EXTRA_GOAL_NQUESTIONS = "com.reustonium.slptracker.goal.nquestions";
-    public static final String EXTRA_GOAL_NCORRECT = "com.reustonium.slptracker.goal.ncorrect";
-    public static final String EXTRA_GOAL_NCUE = "com.reustonium.slptracker.goal.ncue";
-    private String goalName;
+
+    String goalName;
 
     int numQuestions;
     int numCorrect;
@@ -39,8 +37,25 @@ public class GoalFragment extends Fragment {
     Button btn_cue;
     Button btn_wrong;
 
+    Goal mGoal;
+    OnSaveListener mSaveListener;
+
+    public interface OnSaveListener{
+        public void onGoalSaved(Goal mGoal);
+    }
+
     public GoalFragment(){
 
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try{
+            mSaveListener = (OnSaveListener)activity;
+        } catch (ClassCastException ex){
+            throw new ClassCastException(activity.toString());
+        }
     }
 
     @Override
@@ -66,7 +81,7 @@ public class GoalFragment extends Fragment {
         goalName_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                goalName = (String)adapterView.getItemAtPosition(i);
+                goalName = adapterView.getItemAtPosition(i).toString();
             }
 
             @Override
@@ -116,12 +131,6 @@ public class GoalFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_goal, menu);
@@ -132,9 +141,14 @@ public class GoalFragment extends Fragment {
         int id = item.getItemId();
         switch(id){
             case R.id.menu_item_save_goal:
-                sendResult(Activity.RESULT_OK);
+                mGoal = new Goal();
+                mGoal.setGoalName(goalName);
+                mGoal.setNumQuestion(numQuestions);
+                mGoal.setNumIndependent(numCorrect);
+                mGoal.setNumCue(numCue);
+                mSaveListener.onGoalSaved(mGoal);
             case R.id.menu_item_delete_goal:
-                sendResult(Activity.RESULT_CANCELED);
+                //TODO back to PatientFragment
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -153,28 +167,6 @@ public class GoalFragment extends Fragment {
             tv_cue.setText(String.format("%d%%", Math.round((numCorrect+numCue)* 100 /numQuestions)));
             tv_cueData.setText(String.format("%d / %d", (numCorrect+numCue), numQuestions));
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
-
-    private void sendResult(int resultCode){
-        //TODO why is null, FIX IT!
-        if (getTargetFragment() == null) {
-            return;
-        }
-
-        Intent i = new Intent();
-        i.putExtra(EXTRA_GOAL_NAME, goalName);
-        i.putExtra(EXTRA_GOAL_NQUESTIONS, numQuestions);
-        i.putExtra(EXTRA_GOAL_NCORRECT, numCorrect);
-        i.putExtra(EXTRA_GOAL_NCUE, numCue);
-
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, i);
-
     }
 
 }
