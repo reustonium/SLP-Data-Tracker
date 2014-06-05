@@ -25,9 +25,15 @@ import com.reustonium.slpdatatracker.models.Goal;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
+import org.w3c.dom.Text;
+
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnTextChanged;
 
 /**
  * Created by Andrew on 5/25/2014.
@@ -36,10 +42,16 @@ public class PatientFragment extends Fragment {
     public static final String EXTRA_PATIENT_ID = "com.reustonium.slptracker.patient_id";
 
     private Patient mPatient;
-    private EditText mEditText;
-    private TextView mTextView;
-    private ListView mListView;
     private GoalListAdapter mGoalListAdapter;
+
+    @InjectView(R.id.patient_nameEditText)
+    EditText mEditText;
+
+    @InjectView(R.id.patient_updatedAtTextView)
+    TextView mTextView;
+
+    @InjectView(R.id.patient_goal_listView)
+    ListView mListView;
 
     private OnNewGoalListener goalListener;
 
@@ -80,7 +92,8 @@ public class PatientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_patient, container, false);
 
-        mEditText = (EditText)v.findViewById(R.id.patient_nameEditText);
+        ButterKnife.inject(this, v);
+
         mEditText.setText(mPatient.getName());
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -98,12 +111,7 @@ public class PatientFragment extends Fragment {
 
             }
         });
-
-        mTextView = (TextView)v.findViewById(R.id.patient_updatedAtTextView);
-
-        mListView = (ListView)v.findViewById(R.id.patient_goal_listView);
         mListView.setAdapter(mGoalListAdapter);
-
         updateDate();
 
         return v;
@@ -114,7 +122,6 @@ public class PatientFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_patient, menu);
     }
-
 
     private void updateDate(){
         mTextView.setText(mPatient.getPrettyUpdatedAt());
@@ -147,39 +154,48 @@ public class PatientFragment extends Fragment {
         PatientFactory.get(getActivity()).savePatients();
     }
 
-    private class GoalListAdapter extends ArrayAdapter<Goal>{
-
+    public class GoalListAdapter extends ArrayAdapter<Goal>{
         public GoalListAdapter(Context context, int resource, ArrayList<Goal> goals) {
             super(context, resource, goals);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_goals, null);
+            ViewHolder holder;
+            if (convertView != null) {
+                holder = (ViewHolder) convertView.getTag();
+            } else {
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_goals, null);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
             }
 
             Goal g = getItem(position);
 
-            TextView goalName = (TextView)convertView.findViewById(R.id.list_item_goal_name);
-            TextView goalCorrect = (TextView)convertView.findViewById(R.id.list_item_goal_correct);
-            TextView goalCue = (TextView)convertView.findViewById(R.id.list_item_goal_cue);
-            TextView goalDate = (TextView)convertView.findViewById(R.id.list_item_goal_date);
+            holder.goalName.setText(g.getGoalName());
+            holder.goalDate.setText(g.getPrettyDate());
 
-            goalName.setText(g.getGoalName());
-            goalDate.setText(g.getPrettyDate());
-
+            //TODO move this logic to Goal.java
             if(g.getNumQuestion() == 0){
-                goalCorrect.setText("0%");
-                goalCue.setText("0%");
+                holder.goalCorrect.setText("0%");
+                holder.goalCue.setText("0%");
             } else {
-                goalCorrect.setText(String.format("%d%%", Math.round(g.getNumIndependent() * 100/g.getNumQuestion())));
-                goalCue.setText(String.format("%d%%", Math.round((g.numIndependent+g.numCue)* 100 /g.getNumQuestion())));
+                holder.goalCorrect.setText(String.format("%d%%", Math.round(g.getNumIndependent() * 100/g.getNumQuestion())));
+                holder.goalCue.setText(String.format("%d%%", Math.round((g.numIndependent+g.numCue)* 100 /g.getNumQuestion())));
             }
 
             return convertView;
         }
     }
 
+    static class ViewHolder{
+        @InjectView(R.id.list_item_goal_name) TextView goalName;
+        @InjectView(R.id.list_item_goal_correct) TextView goalCorrect;
+        @InjectView(R.id.list_item_goal_cue) TextView goalCue;
+        @InjectView(R.id.list_item_goal_date) TextView goalDate;
+
+        public ViewHolder(View v){
+            ButterKnife.inject(this, v);
+        }
+    }
 }

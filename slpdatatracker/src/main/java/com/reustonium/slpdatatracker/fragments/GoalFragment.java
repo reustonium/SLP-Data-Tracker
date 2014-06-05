@@ -18,30 +18,50 @@ import android.widget.TextView;
 import com.reustonium.slpdatatracker.R;
 import com.reustonium.slpdatatracker.models.Goal;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.InjectViews;
+import butterknife.OnClick;
+import butterknife.OnItemSelected;
+
 public class GoalFragment extends Fragment {
 
     String goalName;
 
-    int numQuestions;
-    int numCorrect;
-    int numCue;
+    int numQuestions, numCorrect, numCue;
 
-    Spinner goalName_Spinner;
-    TextView tv_success;
-    TextView tv_successData;
-    TextView tv_cue;
-    TextView tv_cueData;
-
-    Button btn_correct;
-    Button btn_cue;
-    Button btn_wrong;
+    @InjectView(R.id.fragment_goal_nameSpinner) Spinner goalName_Spinner;
+    @OnItemSelected(R.id.fragment_goal_nameSpinner) void onItemSelected(AdapterView<?> adapterView, int i){
+        goalName = adapterView.getItemAtPosition(i).toString();
+    }
+    @InjectView(R.id.tracker_txt_success) TextView tv_success;
+    @InjectView(R.id.tracker_txt_success_data) TextView tv_successData;
+    @InjectView(R.id.tracker_txt_cue) TextView tv_cue;
+    @InjectView(R.id.tracker_txt_cue_data) TextView tv_cueData;
+    @InjectView(R.id.tracker_btn_correct) Button btn_correct;
+    @InjectView(R.id.tracker_btn_cue) Button btn_cue;
+    @InjectView(R.id.tracker_btn_wrong) Button btn_wrong;
+    @OnClick(R.id.tracker_btn_correct) void onCorrectClick(){
+        numQuestions++;
+        numCorrect++;
+        updateTextViews();
+    }
+    @OnClick(R.id.tracker_btn_cue) void onCueClick(){
+        numQuestions++;
+        numCue++;
+        updateTextViews();
+    }
+    @OnClick(R.id.tracker_btn_wrong) void onWrongClick(){
+        numQuestions++;
+        updateTextViews();
+    }
 
     Goal mGoal;
     OnSaveListener mSaveListener;
 
     public interface OnSaveListener{
         public void onGoalSaved(Goal mGoal);
-        public void onNoGoalSaved();
+        public void onGoalNotSaved();
     }
 
     public GoalFragment(){
@@ -62,71 +82,23 @@ public class GoalFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        numQuestions = 0;
+        numCorrect = 0;
+        numCue = 0;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_goal, container, false);
+        ButterKnife.inject(this, rootView);
 
-        numQuestions = 0;
-        numCorrect = 0;
-        numCue = 0;
-
-        goalName_Spinner = (Spinner)rootView.findViewById(R.id.fragment_goal_nameSpinner);
         ArrayAdapter<CharSequence> mAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.goal_names, android.R.layout.simple_spinner_dropdown_item);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         goalName_Spinner.setAdapter(mAdapter);
-        goalName_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                goalName = adapterView.getItemAtPosition(i).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        tv_success = (TextView)rootView.findViewById(R.id.tracker_txt_success);
-        tv_successData = (TextView)rootView.findViewById(R.id.tracker_txt_success_data);
-        tv_cue = (TextView)rootView.findViewById(R.id.tracker_txt_cue);
-        tv_cueData = (TextView)rootView.findViewById(R.id.tracker_txt_cue_data);
 
         updateTextViews();
-
-        btn_correct = (Button)rootView.findViewById(R.id.tracker_btn_correct);
-        btn_cue = (Button)rootView.findViewById(R.id.tracker_btn_cue);
-        btn_wrong = (Button)rootView.findViewById(R.id.tracker_btn_wrong);
-
-        btn_correct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                numQuestions++;
-                numCorrect++;
-                updateTextViews();
-            }
-        });
-
-        btn_cue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                numQuestions++;
-                numCue++;
-                updateTextViews();
-            }
-        });
-
-        btn_wrong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                numQuestions++;
-                updateTextViews();
-            }
-        });
-
         return rootView;
     }
 
@@ -148,7 +120,7 @@ public class GoalFragment extends Fragment {
                 mGoal.setNumCue(numCue);
                 mSaveListener.onGoalSaved(mGoal);
             case R.id.menu_item_delete_goal:
-                mSaveListener.onNoGoalSaved();
+                mSaveListener.onGoalNotSaved();
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -45,7 +45,7 @@ public class PatientActivity extends Activity implements GoalFragment.OnSaveList
     }
 
     @Override
-    public void onNoGoalSaved() {
+    public void onGoalNotSaved() {
         UUID patientID = (UUID)getIntent().getSerializableExtra(PatientFragment.EXTRA_PATIENT_ID);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();

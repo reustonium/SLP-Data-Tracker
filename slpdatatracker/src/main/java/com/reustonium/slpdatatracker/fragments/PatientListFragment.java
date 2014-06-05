@@ -26,11 +26,17 @@ import com.reustonium.slpdatatracker.R;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Andrew on 5/15/2014.
  */
 public class PatientListFragment extends ListFragment {
     private ArrayList<Patient> mPatients = new ArrayList<Patient>();
+
+    @InjectView(android.R.id.list)
+    ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +51,8 @@ public class PatientListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        ListView listView = (ListView)v.findViewById(android.R.id.list);
+
+        ButterKnife.inject(this, v);
 
         getActivity().getActionBar().setSubtitle("Yeah! Speech Therapist!");
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -157,7 +164,7 @@ public class PatientListFragment extends ListFragment {
         }
     }
 
-    private class PatientAdapter extends ArrayAdapter<Patient>{
+    public class PatientAdapter extends ArrayAdapter<Patient>{
 
         public PatientAdapter(ArrayList<Patient> patients) {
             super(getActivity(), 0, patients);
@@ -165,22 +172,31 @@ public class PatientListFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_patients, null);
+            ViewHolder holder;
+            if (convertView != null) {
+                holder = (ViewHolder)convertView.getTag();
+            } else {
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_patients, null);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
             }
-
             Patient p = getItem(position);
 
-            TextView nameTextView = (TextView)convertView.findViewById(R.id.patient_list_item_nameTextView);
-            TextView updatedTextView = (TextView)convertView.findViewById(R.id.patient_list_item_updatedTextView);
-            TextView numGoalsTextView = (TextView)convertView.findViewById(R.id.patient_list_item_numGoals);
-
-            nameTextView.setText(p.getName());
-            updatedTextView.setText(p.getPrettyUpdatedAt().toString());
-            numGoalsTextView.setText(String.format("%d goals", p.getGoals().size()));
+            holder.nameTextView.setText(p.getName());
+            holder.updatedTextView.setText(p.getPrettyUpdatedAt().toString());
+            holder.numGoalsTextView.setText(String.format("%d goals", p.getGoals().size()));
 
             return convertView;
+        }
+    }
+
+    static class ViewHolder{
+        @InjectView(R.id.patient_list_item_nameTextView) TextView nameTextView;
+        @InjectView(R.id.patient_list_item_updatedTextView) TextView updatedTextView;
+        @InjectView(R.id.patient_list_item_numGoals) TextView numGoalsTextView;
+
+        ViewHolder(View v){
+            ButterKnife.inject(this, v);
         }
     }
 }
