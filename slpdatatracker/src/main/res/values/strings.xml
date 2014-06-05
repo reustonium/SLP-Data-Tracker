@@ -11,13 +11,43 @@
     <string name="tracker_cue">Cue</string>
     <string name="action_reset">reset</string>
     <string-array name="goal_names">
-        <item>Verbal Expression</item>
-        <item>Comprehension</item>
-        <item>Cognitive - Linguistic Skills</item>
-        <item>Reading Comprehension</item>
-        <item>Writing</item>
-        <item>Attention</item>
-        <item>Pragmatics</item>
+        <item>Confrontational Naming</item>
+        <item>Responsive Naming</item>
+        <item>Sentence Completions</item>
+        <item>Naming synonyms</item>
+        <item>Naming antonyms</item>
+        <item>Describing pictures</item>
+        <item>Following directions</item>
+        <item>Answering yes/no questions</item>
+        <item>Identifying picture named</item>
+        <item>Identifying body parts</item>
+        <item>Problem solving</item>
+        <item>Calculations</item>
+        <item>Telling time</item>
+        <item>Counting money</item>
+        <item>Similarities/differences</item>
+        <item>Orientation questions</item>
+        <item>Matching picture to word</item>
+        <item>Sentence comprehension</item>
+        <item>Functional reading</item>
+        <item>Writing words</item>
+        <item>Writing sentences</item>
+        <item>Locating keys on keyboard</item>
+        <item>Writing/typing functional sentences</item>
+        <item>Attention to the left</item>
+        <item>Sustained attention for 5 minutes</item>
+        <item>Divided Attention</item>
+        <item>Eye contact</item>
+        <item>Topic initiation</item>
+        <item>Topic maintenance</item>
+        <item>Articulation in words</item>
+        <item>Articulation in sentences</item>
+        <item>Articulation in conversation</item>
+        <item>Errors in 2 minute conversation</item>
+        <item>Sequencing</item>
+        <item>Small Bite/Sip</item>
+        <item>Memory Book</item>
+
     </string-array>
 
 </resources>

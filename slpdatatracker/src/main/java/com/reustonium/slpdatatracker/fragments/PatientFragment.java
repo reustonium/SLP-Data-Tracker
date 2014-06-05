@@ -3,6 +3,8 @@ package com.reustonium.slpdatatracker.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
@@ -23,6 +25,7 @@ import com.reustonium.slpdatatracker.models.Goal;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.UUID;
 

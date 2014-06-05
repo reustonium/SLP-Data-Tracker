@@ -1,9 +1,11 @@
 package com.reustonium.slpdatatracker.fragments;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.ListFragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.ContextMenu;
@@ -95,8 +97,8 @@ public class PatientListFragment extends ListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_patient_list, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -145,6 +147,11 @@ public class PatientListFragment extends ListFragment {
                 startActivity(i);
                 return true;
 
+            case R.id.menu_item_email:
+                Intent send = new Intent(Intent.ACTION_SENDTO);
+                Uri uri = Uri.parse(PatientFactory.get(getActivity()).generateEmailBody(new Date()));
+                send.setData(uri);
+                startActivity(Intent.createChooser(send, "Send goals..."));
             default:
                 return super.onOptionsItemSelected(item);
         }

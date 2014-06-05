@@ -39,6 +39,21 @@ public class Goal implements Serializable{
         return numIndependent;
     }
 
+    public int getIndependentPercentage(){
+        if(numQuestion == 0){
+            return 0;
+        } else {
+            return Math.round(numIndependent * 100/numQuestion);
+        }
+    }
+    public int getCuePercentage(){
+        if(numQuestion == 0){
+            return 0;
+        } else {
+            return Math.round((numIndependent+numCue) * 100/numQuestion);
+        }
+    }
+
     public void setNumIndependent(int numIndependent) {
         this.numIndependent = numIndependent;
     }
