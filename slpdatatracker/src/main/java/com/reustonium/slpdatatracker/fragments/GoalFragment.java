@@ -65,7 +65,6 @@ public class GoalFragment extends Fragment {
     }
 
     public GoalFragment(){
-
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.reustonium.slpdatatracker.models;
 
+import com.reustonium.slpdatatracker.utils.SLPUtil;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import java.util.BitSet;
 import java.util.Date;
 import java.util.UUID;
 import java.util.ArrayList;
@@ -34,6 +37,17 @@ public class Patient {
 
     public ArrayList<Goal> getGoals() {
         return mGoals;
+    }
+
+    public ArrayList<Goal> getGoals(Date date){
+        ArrayList<Goal> tGoals = new ArrayList<Goal>();
+        for(int i=0; i<mGoals.size(); i++){
+            Goal g = mGoals.get(i);
+            if(SLPUtil.sameDate(g.getDate(), date)){
+                tGoals.add(g);
+            }
+        }
+        return tGoals;
     }
 
     public void setGoals(ArrayList<Goal> goals) {
@@ -69,4 +83,5 @@ public class Patient {
     public void addGoal(Goal mGoal) {
         mGoals.add(mGoal);
     }
+
 }

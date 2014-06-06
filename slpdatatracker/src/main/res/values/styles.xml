@@ -1,8 +1,31 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme"
+        parent="Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/SLPActionbar</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
     </style>
+    <style name="SLPActionbar"
+        parent="android:Widget.ActionBar">
+        <item name="android:titleTextStyle">@style/SLPActionbar.title</item>
+        <item name="android:subtitleTextStyle">@style/SLPActionbar.subtitle</item>
+        <item name="android:background">@android:color/holo_blue_dark</item>
+        <item name="android:height">56dp</item>
+        <item name="android:actionButtonStyle">@style/SLPActionbar.button</item>
+    </style>
+    <style name="SLPActionbar.title"
+        parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="SLPActionbar.subtitle"
+        parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="SLPActionbar.button"
+        parent="android:Widget.ActionButton">
+        <item name="android:padding">0dp</item>
 
+    </style>
+    <dimen name="largeText">22dp</dimen>
 </resources>

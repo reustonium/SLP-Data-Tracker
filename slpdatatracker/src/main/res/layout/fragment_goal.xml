@@ -12,12 +12,15 @@
     <Spinner
         android:id="@+id/fragment_goal_nameSpinner"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_background"/>
     <LinearLayout
         android:id="@+id/tracker_scores"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/card_background">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -31,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="32dp"
+                android:textSize="22dp"
                 android:textColor="@android:color/holo_blue_dark"/>
 
             <TextView
@@ -42,7 +45,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textSize="36dp"
-                android:layout_margin="10dp"/>
+                android:layout_margin="2dp"/>
             <TextView
                 android:id="@+id/tracker_txt_success_data"
                 android:text="9/10"
@@ -65,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="32dp"
+                android:textSize="22dp"
                 android:textColor="@android:color/holo_orange_dark"/>
 
             <TextView
@@ -76,7 +79,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textSize="36dp"
-                android:layout_margin="10dp"/>
+                android:layout_margin="2dp"/>
 
             <TextView
                 android:id="@+id/tracker_txt_cue_data"
@@ -94,31 +97,32 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tracker_scores"
         android:orientation="vertical"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="4dp"
+        android:background="@drawable/card_background">
 
         <Button
         android:id="@+id/tracker_btn_correct"
         android:text="@string/tracker_btn_correct"
-        android:layout_margin="10dp"
-        android:padding="25dp"
+        android:layout_margin="4dp"
+        android:padding="16dp"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_gravity="center"/>
         <Button
         android:id="@+id/tracker_btn_cue"
         android:text="@string/tracker_btn_cue"
-        android:layout_margin="10dp"
-        android:padding="25dp"
+        android:layout_margin="4dp"
+        android:padding="16dp"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_gravity="center"/>
         <Button
         android:id="@+id/tracker_btn_wrong"
         android:text="@string/tracker_btn_wrong"
-        android:layout_margin="15dp"
-        android:padding="25dp"
+        android:layout_margin="4dp"
+        android:padding="16dp"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_gravity="center"/>
 
     </LinearLayout>

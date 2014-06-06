@@ -181,7 +181,7 @@ public class PatientFragment extends Fragment {
                 holder.goalCue.setText("0%");
             } else {
                 holder.goalCorrect.setText(String.format("%d%%", Math.round(g.getNumIndependent() * 100/g.getNumQuestion())));
-                holder.goalCue.setText(String.format("%d%%", Math.round((g.numIndependent+g.numCue)* 100 /g.getNumQuestion())));
+                holder.goalCue.setText(String.format("%d%%", Math.round((g.getNumIndependent()+g.getNumCue())* 100 /g.getNumQuestion())));
             }
 
             return convertView;

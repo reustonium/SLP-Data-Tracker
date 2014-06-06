@@ -7,8 +7,8 @@
     <string name="tracker_btn_correct">Correct</string>
     <string name="tracker_btn_cue">Cue</string>
     <string name="tracker_btn_wrong">Wrong</string>
-    <string name="tracker_success">Success</string>
-    <string name="tracker_cue">Cue</string>
+    <string name="tracker_success">Independent</string>
+    <string name="tracker_cue">w/ Cue</string>
     <string name="action_reset">reset</string>
     <string-array name="goal_names">
         <item>Confrontational Naming</item>

@@ -7,6 +7,8 @@ import java.util.UUID;
 import android.content.Context;
 import android.net.Uri;
 
+import com.reustonium.slpdatatracker.utils.SLPUtil;
+
 /**
  * Created by Andrew on 5/25/2014.
  */
@@ -75,7 +77,7 @@ public class PatientFactory {
             msg = msg + (patient.getName() + System.getProperty("line.separator"));
             for(int i=0; i< patient.getGoals().size(); i++){
                 Goal goal = patient.getGoals().get(i);
-                if(sameDate(date, goal.getDate())){
+                if(SLPUtil.sameDate(date, goal.getDate())){
                     msg = msg + (goal.getGoalName() + ": " + goal.getIndependentPercentage() + "% independently" +
                             ", " + goal.getCuePercentage() + "% with cues." + System.getProperty("line.separator"));
                 }
@@ -88,14 +90,5 @@ public class PatientFactory {
                 "?subject=" + Uri.encode(String.format("Patient Summary: %s", date.toString())) +
                 "&body=" + Uri.encode(msg);
         return uriText;
-    }
-
-    private boolean sameDate(Date date1, Date date2){
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(date1);
-        cal2.setTime(date2);
-        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
     }
 }

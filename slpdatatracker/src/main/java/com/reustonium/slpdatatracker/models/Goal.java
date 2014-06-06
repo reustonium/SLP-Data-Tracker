@@ -9,11 +9,11 @@ import java.util.Date;
  * Created by Andrew on 5/15/2014.
  */
 public class Goal implements Serializable{
-    public String goalName;
+    private String goalName;
     private Date mDate;
-    public int numQuestion;
-    public int numIndependent;
-    public int numCue;
+    private int numQuestion;
+    private int numIndependent;
+    private int numCue;
 
     public Goal(){
         setDate(new Date());

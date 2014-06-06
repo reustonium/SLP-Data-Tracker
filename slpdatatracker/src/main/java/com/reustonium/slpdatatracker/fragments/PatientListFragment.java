@@ -3,7 +3,7 @@ package com.reustonium.slpdatatracker.fragments;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,34 +28,43 @@ import com.reustonium.slpdatatracker.models.PatientFactory;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnItemClick;
 
 /**
  * Created by Andrew on 5/15/2014.
  */
-public class PatientListFragment extends ListFragment {
+public class PatientListFragment extends Fragment {
     private ArrayList<Patient> mPatients = new ArrayList<Patient>();
 
-    @InjectView(android.R.id.list)
-    ListView listView;
+    @InjectView(R.id.patientList) ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Patients");
         mPatients = PatientFactory.get(getActivity()).getPatients();
-        setListAdapter(new PatientAdapter(mPatients));
         setHasOptionsMenu(true);
         setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
-
+        View v = inflater.inflate(R.layout.fragment_patient_list, container, false);
         ButterKnife.inject(this, v);
 
         getActivity().getActionBar().setSubtitle("Yeah! Speech Therapist!");
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setAdapter(new PatientAdapter(mPatients));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Patient p = (Patient)listView.getAdapter().getItem(position);
+
+                Intent i = new Intent(getActivity(), PatientActivity.class);
+                i.putExtra(PatientFragment.EXTRA_PATIENT_ID, p.getId());
+                startActivity(i);
+            }
+        });
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
@@ -78,10 +87,10 @@ public class PatientListFragment extends ListFragment {
             public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.menu_item_delete_patient:
-                        PatientAdapter adapter = (PatientAdapter)getListAdapter();
+                        PatientAdapter adapter = (PatientAdapter)listView.getAdapter();
                         PatientFactory patientFactory = PatientFactory.get(getActivity());
                         for(int i=adapter.getCount()-1; i >=0; i--){
-                            if(getListView().isItemChecked(i)){
+                            if(listView.isItemChecked(i)){
                                 patientFactory.deletePatient(adapter.getItem(i));
                             }
                         }
@@ -117,7 +126,7 @@ public class PatientListFragment extends ListFragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         int position = info.position;
-        PatientAdapter adapter = (PatientAdapter)getListAdapter();
+        PatientAdapter adapter = (PatientAdapter)listView.getAdapter();
         Patient patient = adapter.getItem(position);
         switch (item.getItemId()) {
             case R.id.menu_item_delete_patient:
@@ -131,16 +140,7 @@ public class PatientListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((PatientAdapter)getListAdapter()).notifyDataSetChanged();
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Patient p = (Patient)getListAdapter().getItem(position);
-
-        Intent i = new Intent(getActivity(), PatientActivity.class);
-        i.putExtra(PatientFragment.EXTRA_PATIENT_ID, p.getId());
-        startActivity(i);
+        ((PatientAdapter)listView.getAdapter()).notifyDataSetChanged();
     }
 
     @Override
@@ -184,7 +184,7 @@ public class PatientListFragment extends ListFragment {
 
             holder.nameTextView.setText(p.getName());
             holder.updatedTextView.setText(p.getPrettyUpdatedAt().toString());
-            holder.numGoalsTextView.setText(String.format("%d goals", p.getGoals().size()));
+            holder.numGoalsTextView.setText(String.format("%d", p.getGoals(new Date()).size()));
 
             return convertView;
         }

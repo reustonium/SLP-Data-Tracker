@@ -3,5 +3,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fragment_container_bg"
     tools:context="com.reustonium.slpdatatracker.SingleFragmentActivity"
     tools:ignore="MergeRootFrame" />

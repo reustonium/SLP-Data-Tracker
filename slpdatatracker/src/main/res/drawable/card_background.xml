@@ -6,18 +6,18 @@
             android:shape="rectangle"
             android:dither="true">
             <corners
-                android:radius="6dp"/>
+                android:radius="4dp"/>
             <solid
                 android:color="#555"/>
             </shape>
     </item>
 
-    <item android:bottom="4dp">
+    <item android:bottom="2dp">
         <shape
             android:shape="rectangle"
             android:dither="true">
             <corners
-                android:radius="6dp"/>
+                android:radius="4dp"/>
             <solid
                 android:color="@android:color/white"/>
             <padding
@@ -27,6 +27,5 @@
                 android:right="8dp"/>
             </shape>
     </item>
-
 
 </layer-list>
