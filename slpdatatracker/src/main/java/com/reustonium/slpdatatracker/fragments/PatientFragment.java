@@ -72,8 +72,13 @@ public class PatientFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UUID patientID;
+        if (savedInstanceState != null) {
+            patientID = (UUID)savedInstanceState.getSerializable(EXTRA_PATIENT_ID);
+        } else {
+            patientID = (UUID)getArguments().getSerializable(EXTRA_PATIENT_ID);
+        }
         setHasOptionsMenu(true);
-        UUID patientID = (UUID)getArguments().getSerializable(EXTRA_PATIENT_ID);
         mPatient = PatientFactory.get(getActivity()).getPatient(patientID);
         mGoalListAdapter = new GoalListAdapter(getActivity(), R.layout.list_item_goals, mPatient.getGoals());
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -152,6 +157,12 @@ public class PatientFragment extends Fragment {
             patients.remove(mPatient);
         }
         PatientFactory.get(getActivity()).savePatients();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EXTRA_PATIENT_ID, mPatient.getId());
     }
 
     public class GoalListAdapter extends ArrayAdapter<Goal>{
