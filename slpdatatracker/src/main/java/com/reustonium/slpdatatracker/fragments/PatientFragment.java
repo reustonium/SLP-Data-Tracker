@@ -117,6 +117,8 @@ public class PatientFragment extends Fragment {
             }
         });
         mListView.setAdapter(mGoalListAdapter);
+        View emptyView = v.findViewById(R.id.emptyPatientView);
+        mListView.setEmptyView(emptyView);
         updateDate();
 
         return v;

@@ -53,6 +53,8 @@ public class PatientListFragment extends Fragment {
         ButterKnife.inject(this, v);
 
         getActivity().getActionBar().setSubtitle("Yeah! Speech Therapist!");
+        View emptyView = v.findViewById(R.id.emptyView);
+        listView.setEmptyView(emptyView);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setAdapter(new PatientAdapter(mPatients));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

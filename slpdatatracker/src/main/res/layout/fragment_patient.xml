@@ -58,7 +58,14 @@
         android:id="@+id/patient_goal_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_background">
-
-    </ListView>
+        android:background="@drawable/card_background"/>
+    <TextView
+        android:id="@+id/emptyPatientView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingTop="8dp"
+        android:background="@drawable/card_background"
+        android:text="Add a New Goal with the + above."/>
 </LinearLayout>
