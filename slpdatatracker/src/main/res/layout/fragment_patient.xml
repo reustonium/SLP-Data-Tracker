@@ -24,13 +24,12 @@
                 android:layout_height="wrap_content"
                 android:text="Patient Name"
                 android:textSize="22dp"/>
-            <TextView
+            <EditText
                 android:id="@+id/patient_nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:longClickable="true"
                 android:textSize="22dp"
                 android:gravity="right"
                 android:text="Jimmy"/>

@@ -3,11 +3,12 @@ package com.reustonium.slpdatatracker.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,12 +25,15 @@ import com.reustonium.slpdatatracker.models.Goal;
 import com.reustonium.slpdatatracker.models.Patient;
 import com.reustonium.slpdatatracker.models.PatientFactory;
 
+import org.w3c.dom.Text;
+
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.UUID;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnItemLongClick;
+import butterknife.OnTextChanged;
 
 /**
  * Created by Andrew on 5/25/2014.
@@ -40,7 +45,7 @@ public class PatientFragment extends Fragment {
     private GoalListAdapter mGoalListAdapter;
 
     @InjectView(R.id.patient_nameEditText)
-    TextView mPatientName;
+    EditText mEditText;
 
     @InjectView(R.id.patient_updatedAtTextView)
     TextView mTextView;
@@ -94,12 +99,21 @@ public class PatientFragment extends Fragment {
 
         ButterKnife.inject(this, v);
 
-        mPatientName.setText(mPatient.getName());
-        mPatientName.setOnLongClickListener(new View.OnLongClickListener() {
+        mEditText.setText(mPatient.getName());
+        mEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onLongClick(View view) {
-                //TODO edit text and save patient
-                return false;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mPatient.setName(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
         mListView.setAdapter(mGoalListAdapter);
